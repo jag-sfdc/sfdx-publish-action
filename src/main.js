@@ -7,29 +7,38 @@ const { readFile } = require("fs");
 try {
   console.log("Starting publish action...");
   main();
+  console.log("Finished publish action!");
 } catch (error) {
   console.log(error.message);
 }
 
 async function main() {
   const dir = process.env.GITHUB_WORKSPACE || "/github/workspace";
-  await yarnInstall(dir);
+  incrementVersion(dir, "patch");  
+  yarnInstall(dir);
 }
 
-async function publishPackage(dir, config, version) {
+async function publishPackage(dir) {
   await run(
     dir,
     "yarn",
     "publish",
-    "--non-interactive",
-    "--new-version",
-    version
   );
 
-  console.log("Version has been published successfully:", version);
+  console.log("Package has been published successfully");
 }
 
-async function yarnInstall(dir) {
+function incrementVersion(dir, versionType) {
+  await run(
+    dir,
+    "npm",
+    "version",
+    versionType
+  );
+  console.log("Increment version run successfully run");
+}
+
+function yarnInstall(dir) {
   await run(
     dir,
     "yarn",
