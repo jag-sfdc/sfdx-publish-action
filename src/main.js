@@ -26,8 +26,8 @@ async function publishPackage(dir, config, version) {
 async function yarnInstall(dir) {
   await run(
     dir,
-    "yarn",
-    "install"
+    "yarnx",
+    "installx"
   );
   console.log("Yarn install successfully run");
 }
