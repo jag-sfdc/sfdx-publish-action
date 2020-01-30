@@ -1,11 +1,13 @@
 #!/usr/bin/env node
-
+const core = require('@actions/core');
+const github = require('@actions/github');
 const process = require("process");
 const { join } = require("path");
 const { spawn } = require("child_process");
 const { readFile } = require("fs");
 
 async function main() {
+  console.log("Starting publish action...");
   const dir = process.env.GITHUB_WORKSPACE || "/github/workspace";
   await yarnInstall(dir);
 }
