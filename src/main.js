@@ -12,20 +12,11 @@ try {
   console.log(error.message);
 }
 
-async function main() {
+function main() {
   const dir = process.env.GITHUB_WORKSPACE || "/github/workspace";
   incrementVersion(dir, "patch");  
   yarnInstall(dir);
-  await publishPackage(dir)
-}
-
-async function publishPackage(dir) {
-  await run(
-    dir,
-    "yarn",
-    "publish",
-  );
-  console.log("Package has been published successfully");
+  publishPackage(dir)
 }
 
 function incrementVersion(dir, versionType) {
@@ -45,6 +36,15 @@ function yarnInstall(dir) {
     "install"
   );
   console.log("Yarn install successfully run");
+}
+
+function publishPackage(dir) {
+  await run(
+    dir,
+    "yarn",
+    "publish",
+  );
+  console.log("Package has been published successfully");
 }
 
 function run(cwd, command, ...args) {
