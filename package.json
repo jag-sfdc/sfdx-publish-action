@@ -1,0 +1,9 @@
+{
+  "name": "sfdx-publish-action",
+  "version": "0.0.1",
+  "description": "GitHub action to publish packages to npm",
+  "private": true,
+  "bin": {
+    "sfdx-publish-action": "./src/main.js"
+  }
+}
