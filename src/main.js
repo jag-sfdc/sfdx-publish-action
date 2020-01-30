@@ -4,8 +4,12 @@ const { join } = require("path");
 const { spawn } = require("child_process");
 const { readFile } = require("fs");
 
-async function main() {
+try {
   console.log("Starting publish action...");
+  main();
+}
+
+async function main() {
   const dir = process.env.GITHUB_WORKSPACE || "/github/workspace";
   await yarnInstall(dir);
 }
@@ -26,8 +30,8 @@ async function publishPackage(dir, config, version) {
 async function yarnInstall(dir) {
   await run(
     dir,
-    "yarnx",
-    "installx"
+    "yarn",
+    "install"
   );
   console.log("Yarn install successfully run");
 }
