@@ -37,3 +37,32 @@ async function yarnInstall(dir) {
   );
   console.log("Yarn install successfully run");
 }
+
+function run(cwd, command, ...args) {
+  console.log("Executing:", command, args.join(" "));
+  return new Promise((resolve, reject) => {
+    const proc = spawn(command, args, {
+      cwd,
+      stdio: ["ignore", "ignore", "pipe"]
+    });
+    const buffers = [];
+    proc.stderr.on("data", data => buffers.push(data));
+    proc.on("error", () => {
+      reject(new Error(`command failed: ${command}`));
+    });
+    proc.on("exit", code => {
+      if (code === 0) {
+        resolve(true);
+      } else {
+        const stderr = Buffer.concat(buffers)
+          .toString("utf8")
+          .trim();
+        if (stderr) {
+          console.log(`command failed with code ${code}`);
+          console.log(stderr);
+        }
+        reject(new ExitError(code));
+      }
+    });
+  });
+}
