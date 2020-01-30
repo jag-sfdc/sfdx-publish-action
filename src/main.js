@@ -7,6 +7,8 @@ const { readFile } = require("fs");
 try {
   console.log("Starting publish action...");
   main();
+} catch (error) {
+  console.log(error.message);
 }
 
 async function main() {
