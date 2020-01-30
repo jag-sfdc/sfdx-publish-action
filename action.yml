@@ -1,0 +1,5 @@
+name: 'SFDX Publish Action'
+description: ''
+runs:
+  using: 'node12'
+  main: 'src/main.js'
