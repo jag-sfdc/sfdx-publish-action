@@ -1,15 +1,33 @@
-const core = require('@actions/core');
-const github = require('@actions/github');
+#!/usr/bin/env node
 
-try {
-  // `who-to-greet` input defined in action metadata file
-  const nameToGreet = core.getInput('who-to-greet');
-  console.log(`Hello ${nameToGreet}!`);
-  const time = (new Date()).toTimeString();
-  core.setOutput("time", time);
-  // Get the JSON webhook payload for the event that triggered the workflow
-  const payload = JSON.stringify(github.context.payload, undefined, 2)
-  console.log(`The event payload: ${payload}`);
-} catch (error) {
-  core.setFailed(error.message);
+const process = require("process");
+const { join } = require("path");
+const { spawn } = require("child_process");
+const { readFile } = require("fs");
+
+async function main() {
+  const dir = process.env.GITHUB_WORKSPACE || "/github/workspace";
+  await yarnInstall(dir);
+}
+
+async function publishPackage(dir, config, version) {
+  await run(
+    dir,
+    "yarn",
+    "publish",
+    "--non-interactive",
+    "--new-version",
+    version
+  );
+
+  console.log("Version has been published successfully:", version);
+}
+
+async function yarnInstall(dir) {
+  await run(
+    dir,
+    "yarn",
+    "install"
+  );
+  console.log("Yarn install successfully run");
 }
