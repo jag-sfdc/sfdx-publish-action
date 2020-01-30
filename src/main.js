@@ -16,6 +16,7 @@ async function main() {
   const dir = process.env.GITHUB_WORKSPACE || "/github/workspace";
   incrementVersion(dir, "patch");  
   yarnInstall(dir);
+  await publishPackage(dir)
 }
 
 async function publishPackage(dir) {
@@ -24,12 +25,11 @@ async function publishPackage(dir) {
     "yarn",
     "publish",
   );
-
   console.log("Package has been published successfully");
 }
 
 function incrementVersion(dir, versionType) {
-  await run(
+  run(
     dir,
     "npm",
     "version",
@@ -39,7 +39,7 @@ function incrementVersion(dir, versionType) {
 }
 
 function yarnInstall(dir) {
-  await run(
+  run(
     dir,
     "yarn",
     "install"
