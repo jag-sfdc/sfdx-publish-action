@@ -39,7 +39,7 @@ function yarnInstall(dir) {
 }
 
 function publishPackage(dir) {
-  await run(
+  run(
     dir,
     "yarn",
     "publish",
